@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entregador - POPMERCADO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #locations {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #locations li {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .client-info {
+            font-size: 16px;
+            color: #333;
+        }
+        .separator {
+            margin: 0 20px;
+        }
+        .btn-map {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn-map:hover {
+            background-color: #0056b3;
+        }
+        .btn-map:active {
+            background-color: #004494;
+        }
+        .pulse-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .pulse-text {
+            margin-right: 10px;
+        }
+        .pulse {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            animation: pulse-animation 1.5s infinite;
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
+        }
+        @keyframes pulse-animation {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.5);
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Notificações de Localização - POPMERCADO</h1>
+    <ul id="locations">
+        <li class="pulse-container">
+            <span class="pulse-text">Aguardando novos pedidos...</span>
+            <div class="pulse"></div>
+        </li>
+    </ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Função para adicionar uma nova localização ou endereço à lista
+        function addLocationToList(data) {
+            const locationsList = document.getElementById('locations');
+            const newItem = document.createElement('li');
+
+            if (data.address) {
+                // Caso o cliente tenha enviado um endereço manual
+                newItem.innerHTML = `
+                    <span class="client-info">Cliente ${data.clientId}</span>
+                    <span class="separator">|</span>
+                    <span>${data.address}</span>
+                `;
+            } else {
+                // Caso o cliente tenha enviado coordenadas GPS
+                const mapLink = `https://www.google.com/maps/dir/?api=1&destination=${data.latitude},${data.longitude}`;
+                newItem.innerHTML = `
+                    <span class="client-info">Cliente ${data.clientId}</span>
+                    <span class="separator">|</span>
+                    <a href="${mapLink}" target="_blank" class="btn-map">Abrir no Google Maps</a>
+                `;
+            }
+
+            locationsList.appendChild(newItem);
+        }
+
+        // Essa parte do código é a que escutamos o evento 'locationUpdate'
+        socket.on('locationUpdate', (data) => {
+            console.log('Nova localização recebida:', data);
+            addLocationToList(data);
+        });
+    </script>
+</body>
+</html>

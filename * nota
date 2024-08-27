@@ -1,0 +1,22 @@
+// Para rodar este projeto, você precisará instalar algumas ferramentas e seguir alguns passos:
+
+// Node.js: Este projeto utiliza o Node.js para gerenciar o servidor backend. Você pode baixá-lo e instalá-lo a partir de nodejs.org.
+
+// Ngrok (opcional): Caso deseje expor seu servidor local para a internet (por exemplo, para testes com dispositivos externos), você pode usar o Ngrok.
+
+// Dependências do Node: Após instalar o Node.js, instale as dependências do projeto. Navegue até o diretório do projeto e execute o comando npm install.
+
+// Iniciar o Servidor: Para iniciar o servidor, execute o comando node server.js. O servidor estará rodando em http://localhost:8080 por padrão.
+
+// Configuração do Ngrok: Caso esteja usando o Ngrok, inicie-o com o comando ngrok http 8080. O Ngrok fornecerá uma URL pública que pode ser usada para acessar o servidor local de fora da sua rede.
+
+
+
+
+
+// TMJ, MEU CARO! 
+// Conheça o meu Instagram: @otaciliojuunior
+
+// Um forte abraço e até a próxima! 🚀
+
+// Otacílio Júnior Q. 
